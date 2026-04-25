@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Candy Paws • Snacks & Tortas para Mascotas</title>
 <link rel="icon" href="logoweb.png" type="image/png">
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
@@ -1351,6 +1352,10 @@ body::before {
       onfocus="this.style.borderColor='#92185d'"
       onblur="this.style.borderColor='#ddd'"
     ></textarea>
+    <div style="margin-top:16px;display:flex;justify-content:center;">
+      <div class="g-recaptcha" data-sitekey="6LcWAsQsAAAAAE77NP8tHGW3DwknCVnEC_z9bTAe"></div>
+    </div>
+    <p id="recaptchaError" style="display:none;color:#c0392b;font-family:'Glacial Indifference',sans-serif;font-size:13px;text-align:center;margin-top:8px;font-weight:700;">⚠️ Verificá que no sos un robot</p>
     <button class="write-send-btn" onclick="submitComment()">Enviar comentario</button>
     <button class="write-cancel-btn" onclick="closeWriteModal()">Cancelar</button>
   </div>
@@ -1780,6 +1785,8 @@ window.openWriteModal = function() {
 };
 window.closeWriteModal = function() {
   document.getElementById('writeBackdrop').classList.remove('open');
+  document.getElementById('recaptchaError').style.display = 'none';
+  if (typeof grecaptcha !== 'undefined') grecaptcha.reset();
 };
 document.getElementById('writeBackdrop').addEventListener('click', function(e) {
   if (e.target === this) window.closeWriteModal();
@@ -1790,6 +1797,15 @@ window.submitComment = async function() {
   const nombre = (document.getElementById('nombreInput').value || 'Anónimo').trim();
   const comentario = (document.getElementById('comentarioText').value || '').trim();
   if (comentario.length < 5) { alert('Por favor escribí un comentario más largo.'); return; }
+
+  // reCAPTCHA validation
+  const recaptchaResponse = grecaptcha.getResponse();
+  const recaptchaError = document.getElementById('recaptchaError');
+  if (!recaptchaResponse) {
+    recaptchaError.style.display = 'block';
+    return;
+  }
+  recaptchaError.style.display = 'none';
 
   const sendBtn = document.querySelector('.write-send-btn');
   sendBtn.disabled = true;
