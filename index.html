@@ -734,8 +734,109 @@ body::after {
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
   max-width: 360px;
-  margin: 0 auto 24px;
+  margin: 0 auto 8px;
   justify-items: center;
+}
+/* Ver más avatares */
+.avatar-vermás-btn {
+  display: block;
+  margin: 0 auto 18px;
+  background: none;
+  border: 1px solid rgba(146,24,93,0.4);
+  color: var(--magenta);
+  font-family: 'Glacial Indifference', sans-serif;
+  font-size: 12px;
+  letter-spacing: 1px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.avatar-vermás-btn:hover { background: rgba(146,24,93,0.08); }
+/* Cortina de avatares (desde abajo) */
+#avatarDrawer {
+  position: fixed;
+  bottom: -100%;
+  left: 0; right: 0;
+  background: #fff;
+  color: #222;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.25);
+  z-index: 1400;
+  transition: bottom 0.35s cubic-bezier(0.4,0,0.2,1);
+  padding: 20px 20px 32px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+#avatarDrawer.open { bottom: 0; }
+#avatarDrawerOverlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1399;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+#avatarDrawerOverlay.open { display: block; opacity: 1; }
+.avatar-drawer-handle {
+  width: 40px; height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+.avatar-drawer-title {
+  font-family: 'Glacial Indifference', sans-serif;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  color: var(--magenta);
+  text-align: center;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+.avatar-drawer-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  justify-items: center;
+}
+.avatar-drawer-opt {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.avatar-drawer-opt:active { transform: scale(0.9); }
+.avatar-drawer-opt img {
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transition: all 0.25s;
+}
+.avatar-drawer-opt.selected img {
+  border-color: var(--magenta);
+  box-shadow: 0 0 0 4px rgba(146,24,93,0.2);
+}
+/* Carrito — contador rojo */
+#carritoContador {
+  position: absolute;
+  top: -6px; right: -6px;
+  background: #e74c3c;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Glacial Indifference', sans-serif;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+#btnCarritoWrap { position: relative; display: inline-block; }
+@keyframes carritoZoom {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
 }
 .avatar-opt {
   cursor: pointer;
@@ -1198,6 +1299,21 @@ body::after {
   .btn-comprar, .btn-info { font-size: 11px; padding: 8px 4px; }
   .section-heading { font-size: 18px; margin: 32px 0 20px; }
 }
+.product-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.product-actions > button:nth-child(1),
+.product-actions > button:nth-child(2) { width: calc(50% - 4px); }
+.product-actions > button:nth-child(3) { width: 100%; }
+#btnCarrito:active { transform: scale(0.85); }
+/* FIX 1: curtain-info siempre encima del catálogo */
+#curtain-info { z-index: 1500; }
+/* FIX 2: portada del carrito sin recorte */
+#curtain-carrito .curtain-body img:first-child {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: cover;
+  display: block;
+}
 </style>
 </head>
 <body>
@@ -1226,11 +1342,11 @@ body::after {
     <button class="sidebar-close" id="sidebarClose" aria-label="Cerrar menú">&#8592;</button>
   </div>
   <div class="sidebar-nav">
-    <button class="sidebar-btn" onclick="openCurtain('comprar')">🛒 Cómo Comprar</button>
-    <button class="sidebar-btn" onclick="openCurtain('encargo')">📦 Cómo hacer un encargue</button>
-    <button class="sidebar-btn" onclick="openCatalog()">🏪 Ir a la tienda</button>
+    <button class="sidebar-btn" onclick="openCurtain('comprar')">Cómo Comprar</button>
+    <button class="sidebar-btn" onclick="openCurtain('encargo')">Cómo hacer un encargue</button>
+    <button class="sidebar-btn" onclick="openCatalog()">Ir a la tienda</button>
     <a class="sidebar-btn" href="https://wa.me/5492396512544?text=Hola!%20Quiero%20hacer%20una%20consulta." target="_blank">💬 Contacto</a>
-    <button class="sidebar-btn" onclick="scrollToSocial()">📲 Seguinos en redes</button>
+    <button class="sidebar-btn" onclick="scrollToSocial()">Seguinos en redes</button>
   </div>
 </nav>
 
@@ -1358,7 +1474,7 @@ body::after {
     <textarea
       class="write-textarea"
       id="comentarioText"
-      placeholder="¿Qué te parecieron nuestros productos?"
+      placeholder="Contanos tu experiencia con nuestros productos y la atención de Stefy"
       style="width:100%;height:120px;padding:14px;border-radius:12px;border:1.5px solid #ddd;font-family:'Glacial Indifference',sans-serif;font-size:15px;resize:none;outline:none;transition:border-color 0.2s;background:#fafafa;"
       onfocus="this.style.borderColor='#92185d'"
       onblur="this.style.borderColor='#ddd'"
@@ -1468,6 +1584,7 @@ body::after {
 
       <h3 style="text-align:center;margin-bottom:14px;font-family:'Glacial Indifference',sans-serif;font-size:14px;color:#444;font-weight:700;letter-spacing:1px;">ELEGÍ TU AVATAR</h3>
       <div class="avatars-row" id="avatarsRow"></div>
+      <button class="avatar-vermás-btn" onclick="abrirAvatarDrawer()">+ ver más avatares</button>
 
       <div class="form-group">
         <label class="form-label">Tu nombre:</label>
@@ -1532,6 +1649,13 @@ body::after {
 <a href="https://wa.me/5492396512544?text=Hola!%20Quiero%20hacer%20una%20consulta." target="_blank" class="wa-float" aria-label="WhatsApp">
   <img src="whatsappweb.png" alt="WhatsApp">
 </a>
+<div onclick="abrirCarrito()" style="position:fixed;bottom:100px;right:20px;display:flex;flex-direction:column;align-items:center;z-index:999;cursor:pointer;">
+  <span style="font-size:11px;color:#fff;margin-bottom:4px;opacity:0.9;text-shadow:0 1px 3px rgba(0,0,0,0.8);">ver productos seleccionados</span>
+  <div id="btnCarritoWrap" style="position:relative;display:inline-block;">
+    <div id="btnCarrito" style="width:60px;height:60px;background:#000;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 6px 20px rgba(0,0,0,0.4);transition:transform 0.1s;">🛒</div>
+    <div id="carritoContador" style="position:absolute;top:-6px;right:-6px;background:#e74c3c;color:#fff;font-size:11px;font-weight:700;width:20px;height:20px;border-radius:50%;display:none;align-items:center;justify-content:center;pointer-events:none;"></div>
+  </div>
+</div>
 
 <!-- ===== FIREBASE ===== -->
 <script type="module">
@@ -1595,17 +1719,17 @@ const PRODUCTS = {
     { img:"gomitascuatro.png", nombre:"Gomitas x 1kg", estado:"Siempre en Stock", precioViejo:"$16.950", precio:"$16.000", info: infoGomitas }
   ],
   galletitas: [
-    { img:"galletasuno.png", nombre:"Snacks Saludables 1/2kg", estado:"Por encargue del sabor que me pidas", precioViejo:"$9.970", precio:"$9.000", info: infoGalletitas },
+    { img:"galletasuno.png", nombre:"Snacks Saludables 1/2kg", estado:"Por encargue personalizado", precioViejo:"$9.970", precio:"$9.000", info: infoGalletitas },
     { img:"galletasdos.png", nombre:"Snacks Saludables 1kg", estado:"Por encargue personalizado", precioViejo:"$18.750", precio:"$17.800", info: infoGalletitas }
   ],
   tortas: [
-    { img:"tortasuno.png", nombre:"Torta nº10", estado:"Por encargue del sabor que me pidas", precioViejo:"$12.750", precio:"$12.000", info: infoTorta(10) },
+    { img:"tortasuno.png", nombre:"Torta nº10", estado:"Por encargue personalizado", precioViejo:"$12.750", precio:"$12.000", info: infoTorta(10) },
     { img:"tortasdos.png", nombre:"Torta nº12", estado:"Por encargue personalizado", precioViejo:"$18.750", precio:"$17.800", info: infoTorta(12) },
     { img:"tortastres.png", nombre:"Torta nº14", estado:"Por encargue personalizado", precioViejo:"$18.750", precio:"$18.000", info: infoTorta(14) },
     { img:"tortascuatro.png", nombre:"Torta nº17", estado:"Por encargue personalizado", precioViejo:"$21.790", precio:"$21.000", info: infoTorta(17) }
   ],
   budines: [
-    { img:"budinuno.png", nombre:"Budín Saludable", estado:"Por encargue del sabor que me pidas", precioViejo:"$10.890", precio:"$10.000", info: infoBudin },
+    { img:"budinuno.png", nombre:"Budín Saludable", estado:"Por encargue personalizado", precioViejo:"$10.890", precio:"$10.000", info: infoBudin },
     { img:"cupcakeuno.png", nombre:"Cup Cake", estado:"Por encargue personalizado", precioViejo:"$2.100", precio:"$1.500 c/u", info: infoCupcake }
   ]
 };
@@ -1624,6 +1748,7 @@ function productCardHTML(p, uid) {
     <div class="product-actions">
       <button class="btn-comprar" onclick="toggleBuy(this)">Comprar</button>
       <button class="btn-info" onclick="showInfo('${uid}')">Info</button>
+      <button class="btn-info" onclick="agregarAlCarrito('${p.nombre.replace(/'/g,"\\'")}', '${p.precio}')">🛒 Carrito</button>
     </div>
     <div class="buy-options" id="buy-${uid}">
       <button class="btn-retirar" onclick="sendWA('${p.nombre.replace(/'/g,"\\'")}','Paso a Retirar')">Paso a Retirar</button>
@@ -1980,5 +2105,177 @@ buildAvatars();
 buildStars();
 initCommentsListener();
 </script>
+<script>
+/* ===== CARRITO AVANZADO ===== */
+function _getCarrito() { return JSON.parse(localStorage.getItem("carritoCandy")) || []; }
+function _setCarrito(c) { localStorage.setItem("carritoCandy", JSON.stringify(c)); }
+
+function agregarAlCarrito(nombre, precio) {
+  let c = _getCarrito();
+  const idx = c.findIndex(p => p.nombre === nombre);
+  if (idx >= 0) { c[idx].cantidad = (c[idx].cantidad || 1) + 1; }
+  else { c.push({ nombre, precio, cantidad: 1 }); }
+  _setCarrito(c);
+  actualizarContador();
+  animarCarrito();
+}
+
+function actualizarContador() {
+  const c = _getCarrito();
+  const total = c.reduce((s, p) => s + (p.cantidad || 1), 0);
+  const el = document.getElementById("carritoContador");
+  if (!el) return;
+  if (total > 0) { el.style.display = "flex"; el.innerText = total; }
+  else { el.style.display = "none"; }
+}
+
+function animarCarrito() {
+  const btn = document.getElementById("btnCarrito");
+  if (!btn) return;
+  btn.style.animation = "none";
+  btn.offsetHeight; // reflow
+  btn.style.animation = "carritoZoom 0.25s ease";
+}
+
+function enviarCarritoWhatsApp() {
+  const c = _getCarrito();
+  if (c.length === 0) { alert("El carrito está vacío"); return; }
+  let msg = "Hola Stefi! Quiero comprar:%0A%0A";
+  c.forEach((p, i) => { msg += `${i+1}. ${p.nombre} x${p.cantidad||1} - ${p.precio}%0A`; });
+  window.open(`https://wa.me/5492396512544?text=${msg}`, "_blank");
+}
+
+function vaciarCarrito() { _setCarrito([]); actualizarContador(); }
+function vaciarCarritoModal() { _setCarrito([]); actualizarContador(); renderizarCurtainCarrito(); }
+
+function _renderLista(containerId, totalId, conEliminar) {
+  const c = _getCarrito();
+  const lista = document.getElementById(containerId);
+  const totalEl = document.getElementById(totalId);
+  if (!lista) return;
+  let suma = 0;
+  if (c.length === 0) {
+    lista.innerHTML = `<p style="color:#888;font-family:'Glacial Indifference',sans-serif;padding:12px 0;">El carrito está vacío.</p>`;
+    if (totalEl) totalEl.innerText = "";
+  } else {
+    lista.innerHTML = c.map((p, i) => {
+      const num = parseInt((p.precio||"").replace(/\D/g,"")) || 0;
+      suma += num * (p.cantidad||1);
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #eee;font-family:'Glacial Indifference',sans-serif;gap:8px;">
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:14px;font-weight:700;color:#222;">${p.nombre}</div>
+          <div style="font-size:12px;color:#888;">${p.precio} × ${p.cantidad||1}</div>
+        </div>
+        ${conEliminar ? `<button onclick="eliminarProducto(${i})" style="background:none;border:none;cursor:pointer;font-size:15px;padding:0 2px;flex-shrink:0;">❌</button>` : ""}
+      </div>`;
+    }).join("");
+    if (totalEl) totalEl.innerText = "Total: $" + suma.toLocaleString();
+  }
+}
+
+function renderizarCarrito() { _renderLista("listaCarrito","totalCarrito",true); }
+function renderizarCurtainCarrito() { _renderLista("curtainListaCarrito","curtainTotalCarrito",true); }
+
+function abrirCarrito() {
+  renderizarCurtainCarrito();
+  openCurtain("carrito");
+  // Ocultar modal viejo si quedó abierto
+  const m = document.getElementById("modalCarrito");
+  if (m) m.style.display = "none";
+}
+function cerrarCarrito() { closeCurtain("carrito"); }
+function finalizarCompra() { enviarCarritoWhatsApp(); }
+function finalizarCompraCurtain() { enviarCarritoWhatsApp(); closeCurtain("carrito"); }
+
+function eliminarProducto(index) {
+  let c = _getCarrito(); c.splice(index, 1); _setCarrito(c);
+  actualizarContador(); renderizarCurtainCarrito(); renderizarCarrito();
+}
+
+// Ocultar modal viejo (reemplazado por curtain)
+const _oldModal = document.getElementById("modalCarrito");
+if (_oldModal) _oldModal.style.display = "none";
+
+actualizarContador();
+
+/* ===== AVATAR DRAWER ===== */
+const AVATARES_EXTRA = [
+  "avatarcinco","avatarseis","avatarsiete","avatarocho","avatarnueve",
+  "avatardiez","avataronce","avatardoce","avatartrece","avatarcatorce",
+  "avatarquince","avatardieciseis","avatardiecisiete","avatardieciocho",
+  "avatardiecinueve","avatarveinte","avatarveintiuno","avatarveintidos",
+  "avatarveintitres","avatarveinticuatro"
+].map(n => n + ".png");
+
+function abrirAvatarDrawer() {
+  const grid = document.getElementById("avatarDrawerGrid");
+  if (!grid) return;
+  grid.innerHTML = AVATARES_EXTRA.map(img => `
+    <div class="avatar-drawer-opt${typeof selectedAvatarImg!=='undefined'&&selectedAvatarImg===img?' selected':''}" onclick="seleccionarAvatarExtra('${img}',this)">
+      <img src="${img}" alt="${img}">
+    </div>`).join("");
+  document.getElementById("avatarDrawer").classList.add("open");
+  const ov = document.getElementById("avatarDrawerOverlay");
+  ov.style.display = "block";
+  setTimeout(() => ov.classList.add("open"), 10);
+}
+
+function cerrarAvatarDrawer() {
+  document.getElementById("avatarDrawer").classList.remove("open");
+  const ov = document.getElementById("avatarDrawerOverlay");
+  ov.classList.remove("open");
+  setTimeout(() => { ov.style.display = "none"; }, 320);
+}
+
+function seleccionarAvatarExtra(img, el) {
+  // Actualizar variable global (puede ser en módulo)
+  if (typeof selectedAvatarImg !== "undefined") selectedAvatarImg = img;
+  // Intentar actualizar via evento para el módulo firebase
+  window._selectedAvatarImgGlobal = img;
+  // Marcar selección visual en el drawer
+  document.querySelectorAll(".avatar-drawer-opt").forEach(o => o.classList.remove("selected"));
+  el.classList.add("selected");
+  // Reemplazar 4to avatar en la fila principal visualmente
+  const row = document.getElementById("avatarsRow");
+  if (row) {
+    document.querySelectorAll(".avatar-opt").forEach(a => a.classList.remove("selected"));
+    const last = row.querySelector(".avatar-opt:last-child");
+    if (last) {
+      last.dataset.img = img;
+      last.querySelector("img").src = img;
+      last.classList.add("selected");
+      // Disparar el selectAvatar existente
+      if (typeof selectAvatar === "function") selectAvatar(last);
+    }
+  }
+  setTimeout(cerrarAvatarDrawer, 180);
+}
+</script>
+<!-- ===== AVATAR DRAWER ===== -->
+<div id="avatarDrawerOverlay" onclick="cerrarAvatarDrawer()"></div>
+<div id="avatarDrawer">
+  <div class="avatar-drawer-handle"></div>
+  <div class="avatar-drawer-title">ELEGÍ TU AVATAR</div>
+  <div class="avatar-drawer-grid" id="avatarDrawerGrid"></div>
+</div>
+
+<!-- ===== CURTAIN CARRITO ===== -->
+<div class="curtain" id="curtain-carrito">
+  <div class="curtain-head">
+    <h2>MI CARRITO</h2>
+    <button class="curtain-close" onclick="closeCurtain('carrito')">&#10005;</button>
+  </div>
+  <div class="curtain-body" style="padding:0;">
+    <img src="portadadiez.png" alt="Carrito" style="width:100%;height:140px;object-fit:cover;display:block;">
+    <div style="padding:16px 20px;">
+      <div id="curtainListaCarrito"></div>
+      <p id="curtainTotalCarrito" style="font-weight:700;margin-top:12px;font-size:16px;color:#222;font-family:'Glacial Indifference',sans-serif;"></p>
+    </div>
+  </div>
+  <div class="curtain-footer" style="display:flex;flex-direction:column;gap:8px;">
+    <button class="curtain-action-btn" onclick="finalizarCompraCurtain()">📲 Enviar pedido por WhatsApp</button>
+    <button class="curtain-action-btn" onclick="vaciarCarritoModal();renderizarCurtainCarrito();" style="background:#e74c3c;">🗑️ Vaciar carrito</button>
+  </div>
+</div>
 </body>
 </html>
