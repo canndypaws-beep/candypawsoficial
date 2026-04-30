@@ -7,9 +7,18 @@
 <link rel="icon" href="logoweb.png" type="image/png">
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- CAMBIO 2: Lucky Bones font -->
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+/* Lucky Bones via CDN */
+@font-face {
+  font-family: 'Lucky Bones';
+  src: url('https://fonts.cdnfonts.com/s/34568/LuckyBones.woff') format('woff');
+  font-weight: 400;
+}
+
 @font-face {
   font-family: 'Glacial Indifference';
   src: url('https://fonts.cdnfonts.com/s/16219/GlacialIndifference-Regular.woff') format('woff');
@@ -37,6 +46,8 @@
   --shadow-float: 0 6px 20px rgba(0,0,0,0.35);
   --overlay: rgba(0,0,0,0.48);
   --transition: all 0.28s cubic-bezier(0.4,0,0.2,1);
+  /* CAMBIO 2: font variable para modales/catálogo */
+  --font-modal: 'Lucky Bones', 'Nunito', 'Glacial Indifference', sans-serif;
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -50,7 +61,6 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  /* ── TIPOGRAFÍA: peso base más liviano ── */
   font-weight: 400;
   line-height: 1.65;
 }
@@ -78,7 +88,6 @@ body::after {
 .title-anton { font-family: 'Anton', sans-serif !important; letter-spacing: 1.5px; }
 .text-glacial { font-family: 'Glacial Indifference', sans-serif !important; }
 
-/* ── TIPOGRAFÍA GLOBAL: reducir peso visual ── */
 strong { font-weight: 700; }
 p, li, label, span, div {
   font-weight: 400;
@@ -132,7 +141,6 @@ p, li, label, span, div {
   letter-spacing: 3px;
   text-align: center;
   text-transform: uppercase;
-  /* Anton es display — no tocar weight */
 }
 .header-logo {
   position: absolute;
@@ -221,7 +229,7 @@ p, li, label, span, div {
   border: 1px solid rgba(255,255,255,0.08);
   color: rgba(255,255,255,0.85);
   font-family: 'Glacial Indifference', sans-serif;
-  font-size: 13px;            /* ── más liviano ── */
+  font-size: 13px;
   font-weight: 400;
   letter-spacing: 1px;
   padding: 13px 18px;
@@ -263,10 +271,12 @@ p, li, label, span, div {
   border-bottom: 2px solid var(--black);
   flex-shrink: 0;
 }
+/* CAMBIO 2: Lucky Bones en curtain head */
 .curtain-head h2 {
-  font-family: 'Anton', sans-serif;
+  font-family: var(--font-modal);
   color: var(--black);
-  font-size: 17px;            /* ── un toque más liviano ── */
+  font-size: 17px;
+  font-weight: 400;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -284,15 +294,19 @@ p, li, label, span, div {
   transition: var(--transition);
 }
 .curtain-close:hover { background: #222; transform: scale(1.06); }
+/* CAMBIO 3: glass style en curtain-body + CAMBIO 2: Lucky Bones */
 .curtain-body {
   padding: 28px 22px;
   overflow-y: auto;
   flex: 1;
-  font-family: 'Glacial Indifference', sans-serif;
-  font-size: 14.5px;         /* ── más liviano ── */
+  font-family: var(--font-modal);
+  font-size: 14.5px;
   font-weight: 400;
   line-height: 1.85;
-  color: #444;               /* ── gris suave, menos negro puro ── */
+  color: #444;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 .curtain-body ol { padding-left: 22px; }
 .curtain-body ol li { margin-bottom: 12px; padding-left: 4px; }
@@ -308,12 +322,18 @@ p, li, label, span, div {
   color: var(--white);
   border: none;
   border-radius: var(--radius-btn);
-  font-family: 'Anton', sans-serif;
+  font-family: var(--font-modal);
   font-size: 14px;
+  font-weight: 400;
   letter-spacing: 1.5px;
   cursor: pointer;
   transition: var(--transition);
   text-transform: uppercase;
+  /* CAMBIO 4: centrado */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 .curtain-action-btn:hover {
   background: #1a1a1a;
@@ -335,27 +355,36 @@ p, li, label, span, div {
   overflow-y: auto;
 }
 .modal-backdrop.open { display: flex; }
+/* CAMBIO 3: glass style en catalog modal */
 .catalog-modal {
-  background: var(--surface);
+  background: rgba(245,245,245,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: 20px;
   width: 100%;
   max-width: 960px;
   margin: auto;
   overflow: hidden;
   box-shadow: 0 40px 100px rgba(0,0,0,0.45);
-  border: 1px solid rgba(0,0,0,0.06);
+  border: 1px solid rgba(255,255,255,0.3);
 }
+/* CAMBIO 3: glass style en catalog modal head */
 .catalog-modal-head {
-  background: var(--black);
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   padding: 20px 26px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
+/* CAMBIO 2: Lucky Bones en catalog modal */
 .catalog-modal-head h2 {
-  font-family: 'Anton', sans-serif;
+  font-family: var(--font-modal);
   color: var(--white);
   font-size: 18px;
+  font-weight: 400;
   letter-spacing: 3px;
   text-transform: uppercase;
 }
@@ -378,11 +407,12 @@ p, li, label, span, div {
   overflow-y: auto;
   max-height: 80vh;
 }
+/* CAMBIO 2: Lucky Bones en catalog section title */
 .catalog-section-title {
-  font-family: 'Glacial Indifference', sans-serif;  /* ── más liviano que Anton ── */
-  font-weight: 700;
+  font-family: var(--font-modal);
+  font-weight: 400;
   color: var(--black);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 2.5px;
   margin: 32px 0 16px;
   padding-bottom: 8px;
@@ -455,9 +485,8 @@ p, li, label, span, div {
   max-width: 1200px;
   margin: 0 auto;
 }
-/* ── TIPOGRAFÍA: headings más ligeros ── */
 .section-heading {
-  font-family: 'Glacial Indifference', sans-serif;  /* cambio de Anton a Glacial para menor peso */
+  font-family: 'Glacial Indifference', sans-serif;
   font-weight: 700;
   font-size: clamp(17px, 4.5vw, 28px);
   color: var(--white);
@@ -526,7 +555,6 @@ p, li, label, span, div {
 }
 .product-card:hover img { transform: scale(1.02); }
 
-/* ── TIPOGRAFÍA: nombre de producto ── */
 .product-name {
   font-family: 'Glacial Indifference', sans-serif;
   font-weight: 700;
@@ -577,11 +605,7 @@ p, li, label, span, div {
 .product-actions > button:nth-child(2) { width: calc(50% - 3.5px); }
 .product-actions > button:nth-child(3) { width: 100%; }
 
-/* ─────────────────────────────────────────
-   BOTONES — CAMBIOS CLAVE
-───────────────────────────────────────── */
-
-/* 1. COMPRAR → verde + texto BLANCO */
+/* CAMBIO 4: centrado en todos los botones */
 .btn-comprar {
   background: #50e03e;
   color: #ffffff !important;
@@ -595,6 +619,10 @@ p, li, label, span, div {
   cursor: pointer;
   transition: var(--transition);
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 .btn-comprar:hover {
   background: #3ed42d;
@@ -602,7 +630,6 @@ p, li, label, span, div {
   box-shadow: 0 6px 18px rgba(80,224,62,0.38);
 }
 
-/* 2. INFO → blanco + borde negro fino + texto negro */
 .btn-info {
   background: #ffffff;
   color: #000000 !important;
@@ -616,6 +643,10 @@ p, li, label, span, div {
   cursor: pointer;
   transition: var(--transition);
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 .btn-info:hover {
   background: #f5f5f5;
@@ -624,7 +655,6 @@ p, li, label, span, div {
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* 3. CARRITO (tercer botón) → negro + texto blanco + sin borde */
 .btn-carrito {
   background: #0a0a0a;
   color: #ffffff !important;
@@ -639,6 +669,10 @@ p, li, label, span, div {
   transition: var(--transition);
   text-transform: uppercase;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 .btn-carrito:hover {
   background: #222;
@@ -646,7 +680,6 @@ p, li, label, span, div {
   box-shadow: 0 6px 18px rgba(0,0,0,0.28);
 }
 
-/* 4. BUY-OPTIONS: Retirar → negro blanco / Domicilio → verde BLANCO */
 .buy-options {
   display: none;
   grid-template-columns: 1fr 1fr;
@@ -670,12 +703,16 @@ p, li, label, span, div {
   line-height: 1.3;
   letter-spacing: 0.3px;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 .btn-retirar:hover { background: #222; transform: translateY(-2px); }
 
 .btn-domicilio {
   background: #50e03e;
-  color: #ffffff !important;   /* ── blanco según pedido ── */
+  color: #ffffff !important;
   border: none;
   padding: 9px 4px;
   border-radius: var(--radius-btn);
@@ -686,24 +723,51 @@ p, li, label, span, div {
   transition: var(--transition);
   line-height: 1.3;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 .btn-domicilio:hover { background: #3ed42d; transform: translateY(-2px); }
 
-/* ===== STEFI MODALS ===== */
+/* ===== STEFI MODALS — CAMBIO 1: centrado + CAMBIO 3: glass ===== */
 .stefi-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.72);
-  backdrop-filter: blur(6px);
-  z-index: 1500;
+  /* CAMBIO 1: centrado correcto con flex */
   display: none;
   align-items: center;
   justify-content: center;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1500;
   padding: 16px;
 }
 .stefi-backdrop.open { display: flex; }
+
+/* Stefy 2 tiene clase diferente */
+.stefy-backdrop {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1500;
+  padding: 16px;
+}
+.stefy-backdrop.open { display: flex; }
+
+/* CAMBIO 3: glass style en stefi-box */
 .stefi-box {
-  background: var(--white);
+  /* CAMBIO 3: glass */
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.3);
   color: var(--black);
   border-radius: 20px;
   max-width: 540px;
@@ -713,12 +777,11 @@ p, li, label, span, div {
   padding: 32px 26px;
   position: relative;
   box-shadow: 0 40px 100px rgba(0,0,0,0.4);
-  border: 1px solid rgba(0,0,0,0.06);
 }
-/* ── TIPOGRAFÍA: modal Stefi más liviana ── */
+/* CAMBIO 2: Lucky Bones en stefi-box */
 .stefi-box h2 {
-  font-family: 'Glacial Indifference', sans-serif;
-  font-weight: 700;
+  font-family: var(--font-modal);
+  font-weight: 400;
   color: var(--black);
   font-size: 20px;
   margin-bottom: 20px;
@@ -728,20 +791,21 @@ p, li, label, span, div {
   text-transform: uppercase;
 }
 .stefi-box p {
-  font-family: 'Glacial Indifference', sans-serif;
+  font-family: var(--font-modal);
   font-size: 14.5px;
   font-weight: 400;
   line-height: 1.85;
   margin-bottom: 12px;
   color: #444;
 }
+/* CAMBIO 1: botón cerrar centrado + funcional */
 .stefi-close {
   display: flex;
   justify-content: center;
   margin-top: 28px;
   position: sticky;
   bottom: 0;
-  background: var(--white);
+  background: transparent;
   padding-top: 12px;
 }
 .stefi-close-btn {
@@ -750,15 +814,31 @@ p, li, label, span, div {
   border: none;
   padding: 13px 52px;
   border-radius: var(--radius-pill);
-  font-family: 'Glacial Indifference', sans-serif;
+  font-family: var(--font-modal);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 2px;
   cursor: pointer;
   transition: var(--transition);
   text-transform: uppercase;
+  /* CAMBIO 4: centrado */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 .stefi-close-btn:hover { background: #1a1a1a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+
+/* stefy-close (clase alternativa para modal 2) */
+.stefy-close {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+  position: sticky;
+  bottom: 0;
+  background: transparent;
+  padding-top: 12px;
+}
 
 /* ===== INFO PRODUCT CURTAIN ===== */
 .info-backdrop {
@@ -773,8 +853,12 @@ p, li, label, span, div {
   padding: 16px;
 }
 .info-backdrop.open { display: flex; }
+/* CAMBIO 3: glass en info-box */
 .info-box {
-  background: var(--white);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.3);
   color: var(--black);
   border-radius: 20px;
   max-width: 520px;
@@ -791,12 +875,15 @@ p, li, label, span, div {
   justify-content: space-between;
   position: sticky;
   top: 0;
-  background: var(--white);
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 2;
 }
+/* CAMBIO 2: Lucky Bones en info head */
 .info-head h3 {
-  font-family: 'Glacial Indifference', sans-serif;
-  font-weight: 700;
+  font-family: var(--font-modal);
+  font-weight: 400;
   color: var(--black);
   font-size: 15px;
   letter-spacing: 1.5px;
@@ -816,9 +903,10 @@ p, li, label, span, div {
   transition: var(--transition);
 }
 .info-close:hover { background: #222; transform: scale(1.06); }
+/* CAMBIO 2: Lucky Bones en info-content */
 .info-content {
   padding: 22px 24px 32px;
-  font-family: 'Glacial Indifference', sans-serif;
+  font-family: var(--font-modal);
   font-size: 14px;
   font-weight: 400;
   line-height: 1.9;
@@ -827,7 +915,7 @@ p, li, label, span, div {
 .info-content p { margin-bottom: 12px; }
 
 /* ==========================================================
-   COMMENTS SECTION — REDISEÑO ESTÉTICO (lógica intacta)
+   COMMENTS SECTION
    ========================================================== */
 .comments-section {
   background: #fafafa;
@@ -838,7 +926,6 @@ p, li, label, span, div {
   color: var(--black);
   border: 1px solid rgba(0,0,0,0.04);
 }
-/* Título sección */
 .comments-title {
   font-family: 'Glacial Indifference', sans-serif;
   font-weight: 700;
@@ -848,7 +935,6 @@ p, li, label, span, div {
   margin-bottom: 36px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  /* línea decorativa */
   position: relative;
   padding-bottom: 16px;
 }
@@ -864,7 +950,6 @@ p, li, label, span, div {
   border-radius: 2px;
 }
 
-/* Avatar selector */
 .avatars-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -895,7 +980,6 @@ p, li, label, span, div {
   border-color: var(--black);
 }
 
-/* Comment cards — rediseño visual */
 .comment-card {
   display: flex;
   gap: 14px;
@@ -913,7 +997,7 @@ p, li, label, span, div {
 }
 .comment-card.featured-card {
   background: #ffffff;
-  border-left: 3px solid #50e03e;   /* ── verde en vez de negro ── */
+  border-left: 3px solid #50e03e;
   box-shadow: 0 4px 20px rgba(80,224,62,0.08);
 }
 .comment-avatar {
@@ -939,7 +1023,7 @@ p, li, label, span, div {
   color: var(--black);
   letter-spacing: 0.3px;
 }
-.comment-stars { color: #f5a623; font-size: 12px; }  /* ── tono más cálido ── */
+.comment-stars { color: #f5a623; font-size: 12px; }
 .comment-text {
   font-family: 'Glacial Indifference', sans-serif;
   font-size: 13.5px;
@@ -981,7 +1065,6 @@ p, li, label, span, div {
   letter-spacing: 0.3px;
 }
 
-/* Featured label */
 .featured-wrap { margin: 28px 0; display: none; }
 .featured-label {
   font-family: 'Glacial Indifference', sans-serif;
@@ -1002,7 +1085,6 @@ p, li, label, span, div {
   background: #e0e0e0;
 }
 
-/* Empty state */
 .comments-empty {
   text-align: center;
   padding: 48px 20px;
@@ -1014,7 +1096,6 @@ p, li, label, span, div {
 }
 #all-comments-list { padding: 18px 18px 48px; }
 
-/* Like pop */
 @keyframes likePopAnim {
   0% { transform: scale(1); }
   40% { transform: scale(1.5); }
@@ -1022,7 +1103,6 @@ p, li, label, span, div {
 }
 .like-pop { animation: likePopAnim 0.35s ease; }
 
-/* Write comment btn */
 .write-comment-btn {
   width: 100%;
   padding: 15px;
@@ -1038,6 +1118,10 @@ p, li, label, span, div {
   transition: var(--transition);
   margin-top: 10px;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 .write-comment-btn:hover {
   background: #1a1a1a;
@@ -1045,7 +1129,6 @@ p, li, label, span, div {
   box-shadow: 0 10px 28px rgba(0,0,0,0.2);
 }
 
-/* See all btn */
 .see-all-btn {
   background: none;
   border: 1px solid rgba(0,0,0,0.18);
@@ -1069,7 +1152,6 @@ p, li, label, span, div {
   transform: translateY(-2px);
 }
 
-/* Form inputs */
 .form-group { margin-bottom: 20px; }
 .form-label {
   display: block;
@@ -1098,13 +1180,12 @@ p, li, label, span, div {
   box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
 }
 
-/* Stars */
 .stars-row { display: flex; gap: 10px; justify-content: center; margin: 16px 0; }
 .star-btn { font-size: 32px; cursor: pointer; color: #e0e0e0; transition: var(--transition); background: none; border: none; line-height: 1; }
 .star-btn.lit { color: #f5a623; }
 .star-btn:hover { transform: scale(1.2); }
 
-/* ===== WRITE MODAL ===== */
+/* ===== WRITE MODAL — CAMBIO 3: glass ===== */
 .write-backdrop {
   position: fixed;
   inset: 0;
@@ -1117,8 +1198,12 @@ p, li, label, span, div {
   padding: 16px;
 }
 .write-backdrop.open { display: flex; }
+/* CAMBIO 3: glass en write-box + CAMBIO 2: Lucky Bones */
 .write-box {
-  background: var(--white);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.3);
   color: var(--black);
   border-radius: 20px;
   max-width: 480px;
@@ -1126,11 +1211,10 @@ p, li, label, span, div {
   padding: 32px 26px;
   box-shadow: 0 40px 100px rgba(0,0,0,0.4);
   position: relative;
-  border: 1px solid rgba(0,0,0,0.06);
 }
 .write-box h2 {
-  font-family: 'Glacial Indifference', sans-serif;
-  font-weight: 700;
+  font-family: var(--font-modal);
+  font-weight: 400;
   color: var(--black);
   font-size: 17px;
   margin-bottom: 18px;
@@ -1145,13 +1229,13 @@ p, li, label, span, div {
   padding: 14px 16px;
   border: 1px solid rgba(0,0,0,0.12);
   border-radius: var(--radius-btn);
-  font-family: 'Glacial Indifference', sans-serif;
+  font-family: var(--font-modal);
   font-size: 14px;
   font-weight: 400;
   resize: vertical;
   outline: none;
   transition: var(--transition);
-  background: #fafafa;
+  background: rgba(255,255,255,0.7);
 }
 .write-textarea:focus { border-color: var(--black); background: var(--white); box-shadow: 0 0 0 3px rgba(0,0,0,0.05); }
 .write-send-btn {
@@ -1161,14 +1245,17 @@ p, li, label, span, div {
   color: var(--white);
   border: none;
   border-radius: var(--radius-btn);
-  font-family: 'Glacial Indifference', sans-serif;
+  font-family: var(--font-modal);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 2px;
   cursor: pointer;
   margin-top: 16px;
   transition: var(--transition);
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .write-send-btn:hover { background: #1a1a1a; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.2); }
 .write-cancel-btn {
@@ -1178,16 +1265,19 @@ p, li, label, span, div {
   color: #888;
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: var(--radius-btn);
-  font-family: 'Glacial Indifference', sans-serif;
+  font-family: var(--font-modal);
   font-size: 13px;
   font-weight: 400;
   cursor: pointer;
   margin-top: 8px;
   transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .write-cancel-btn:hover { background: #f5f5f5; color: var(--black); }
 
-/* ===== SUCCESS MODAL ===== */
+/* ===== SUCCESS MODAL — CAMBIO 3: glass ===== */
 .success-backdrop {
   position: fixed;
   inset: 0;
@@ -1200,8 +1290,12 @@ p, li, label, span, div {
   padding: 16px;
 }
 .success-backdrop.open { display: flex; }
+/* CAMBIO 3: glass en success-box */
 .success-box {
-  background: var(--white);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.3);
   color: var(--black);
   border-radius: 20px;
   max-width: 380px;
@@ -1209,12 +1303,12 @@ p, li, label, span, div {
   padding: 40px 28px;
   text-align: center;
   box-shadow: 0 40px 100px rgba(0,0,0,0.4);
-  border: 1px solid rgba(0,0,0,0.06);
 }
 .success-icon { font-size: 48px; margin-bottom: 16px; }
+/* CAMBIO 2: Lucky Bones en success */
 .success-box h3 {
-  font-family: 'Glacial Indifference', sans-serif;
-  font-weight: 700;
+  font-family: var(--font-modal);
+  font-weight: 400;
   color: var(--black);
   font-size: 20px;
   margin-bottom: 10px;
@@ -1222,7 +1316,7 @@ p, li, label, span, div {
   text-transform: uppercase;
 }
 .success-box p {
-  font-family: 'Glacial Indifference', sans-serif;
+  font-family: var(--font-modal);
   font-size: 14px;
   font-weight: 400;
   color: #666;
@@ -1234,18 +1328,20 @@ p, li, label, span, div {
   flex: 1; padding: 13px;
   background: var(--black); color: var(--white);
   border: none; border-radius: var(--radius-btn);
-  font-family: 'Glacial Indifference', sans-serif;
-  font-size: 13px; font-weight: 700;
+  font-family: var(--font-modal);
+  font-size: 13px; font-weight: 400;
   letter-spacing: 1.5px; cursor: pointer; transition: var(--transition); text-transform: uppercase;
+  display: flex; align-items: center; justify-content: center;
 }
 .success-accept:hover { background: #1a1a1a; transform: translateY(-2px); }
 .success-seeall {
   flex: 1; padding: 13px;
   background: #f5f5f5; color: var(--black);
   border: 1px solid rgba(0,0,0,0.1); border-radius: var(--radius-btn);
-  font-family: 'Glacial Indifference', sans-serif;
-  font-size: 13px; font-weight: 700;
+  font-family: var(--font-modal);
+  font-size: 13px; font-weight: 400;
   letter-spacing: 1.5px; cursor: pointer; transition: var(--transition); text-transform: uppercase;
+  display: flex; align-items: center; justify-content: center;
 }
 .success-seeall:hover { background: var(--black); color: var(--white); border-color: var(--black); transform: translateY(-2px); }
 
@@ -1320,7 +1416,9 @@ p, li, label, span, div {
   letter-spacing: 1px;
   cursor: pointer;
   text-decoration: none;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: var(--transition);
   text-transform: uppercase;
   white-space: nowrap;
@@ -1415,7 +1513,6 @@ p, li, label, span, div {
 }
 .avatar-drawer-opt.selected img { border-color: var(--black); box-shadow: 0 0 0 4px rgba(0,0,0,0.12); }
 
-/* Avatar selector on page */
 .avatar-opt { cursor: pointer; transition: var(--transition); }
 .avatar-opt img {
   width: 62px; height: 62px;
@@ -1429,7 +1526,6 @@ p, li, label, span, div {
 .avatar-opt:hover img { transform: scale(1.06); box-shadow: var(--shadow-hover); }
 .avatar-opt.selected img { border-color: var(--black); transform: scale(1.1); box-shadow: 0 0 0 4px rgba(0,0,0,0.12); }
 
-/* Carrito contador */
 #carritoContador {
   position: absolute; top: -6px; right: -6px;
   background: #e74c3c; color: #fff;
@@ -1449,11 +1545,10 @@ p, li, label, span, div {
   100% { transform: scale(1); }
 }
 
-/* ===== SPACERS ===== */
 .spacer-sm { height: 24px; }
 .spacer-md { height: 48px; }
 
-/* ===== MODAL SELECCIÓN TIPO ENTREGA ===== */
+/* ===== DELIVERY SELECTOR MODAL — CAMBIO 3: glass ===== */
 .delivery-selector-backdrop {
   position: fixed;
   inset: 0;
@@ -1466,20 +1561,24 @@ p, li, label, span, div {
   padding: 16px;
 }
 .delivery-selector-backdrop.open { display: flex; }
+/* CAMBIO 3: glass en delivery selector */
 .delivery-selector-box {
-  background: var(--white);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.3);
   color: var(--black);
   border-radius: 20px;
   max-width: 380px;
   width: 100%;
   padding: 32px 26px;
   box-shadow: 0 40px 100px rgba(0,0,0,0.4);
-  border: 1px solid rgba(0,0,0,0.06);
   text-align: center;
 }
+/* CAMBIO 2: Lucky Bones en delivery selector */
 .delivery-selector-box h3 {
-  font-family: 'Glacial Indifference', sans-serif;
-  font-weight: 700;
+  font-family: var(--font-modal);
+  font-weight: 400;
   color: var(--black);
   font-size: 16px;
   margin-bottom: 24px;
@@ -1497,13 +1596,16 @@ p, li, label, span, div {
   border-radius: var(--radius-btn);
   background: var(--white);
   color: var(--black);
-  font-family: 'Glacial Indifference', sans-serif;
+  font-family: var(--font-modal);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 1px;
   cursor: pointer;
   transition: var(--transition);
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .delivery-option-btn:hover {
   border-color: var(--black);
@@ -1531,6 +1633,11 @@ p, li, label, span, div {
   .section-heading { font-size: 15px; margin: 36px 0 20px; }
   .comments-section { padding: 28px 16px; }
   .social-section { padding: 32px 16px; }
+  /* CAMBIO 1: modal centrado en mobile */
+  .stefi-box, .write-box, .success-box, .delivery-selector-box {
+    width: 95%;
+    padding: 24px 16px;
+  }
 }
 
 /* FIXES */
@@ -1541,6 +1648,332 @@ p, li, label, span, div {
 #curtainListaCarrito > div { border-bottom: 1px solid rgba(0,0,0,0.06) !important; }
 #curtainListaCarrito > div:last-child { border-bottom: none !important; }
 .curtain-footer [style*="e74c3c"] { background: #e74c3c !important; border-radius: var(--radius-btn) !important; }
+
+/* ===== AESTHETIC PATCHES v2 ===== */
+
+/* ─── 1. IMÁGENES EN EL CARRITO: fijas, pequeñas, alineadas ─── */
+.carrito-item-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.carrito-item-row:last-child { border-bottom: none; }
+
+/* Imagen siempre 70×70, recortada, alineada izquierda */
+.carrito-item-img {
+  width: 70px !important;
+  height: 70px !important;
+  min-width: 70px !important;
+  max-width: 70px !important;
+  object-fit: cover !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(0,0,0,0.08) !important;
+  flex-shrink: 0 !important;
+  background: #f5f5f5;
+  display: block !important;
+}
+/* Bloquear cualquier img suelta dentro del curtain-body del carrito que no sea el banner */
+#curtain-carrito .curtain-body img:not(.carrito-item-img) {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+  max-width: 100%;
+}
+
+.carrito-item-info { flex: 1; min-width: 0; }
+.carrito-item-nombre {
+  font-size: 12px;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Glacial Indifference', sans-serif;
+}
+.carrito-item-meta {
+  font-size: 11px;
+  color: #aaa;
+  margin-top: 3px;
+  font-weight: 400;
+  font-family: 'Glacial Indifference', sans-serif;
+}
+.carrito-item-del {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0 4px;
+  flex-shrink: 0;
+  opacity: 0.35;
+  transition: opacity 0.2s;
+  color: #000;
+  line-height: 1;
+}
+.carrito-item-del:hover { opacity: 1; }
+
+/* ─── 2 & 3. TODOS LOS MODALES Y CUADROS FLOTANTES: blur + transparente ─── */
+
+/* Catálogo flotante */
+.catalog-modal {
+  background: rgba(255,255,255,0.08) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+}
+.catalog-modal-head {
+  background: rgba(0,0,0,0.55) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+.catalog-modal-body {
+  background: rgba(255,255,255,0.06) !important;
+}
+
+/* Carrito lateral */
+#curtain-carrito {
+  background: rgba(255,255,255,0.08) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-left: 1px solid rgba(255,255,255,0.15) !important;
+}
+#curtain-carrito .curtain-head {
+  background: rgba(0,0,0,0.60) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.10) !important;
+}
+#curtain-carrito .curtain-head h2 { color: #fff !important; }
+#curtain-carrito .curtain-body {
+  background: transparent !important;
+}
+#curtain-carrito .curtain-footer {
+  background: rgba(255,255,255,0.08) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border-top: 1px solid rgba(255,255,255,0.12) !important;
+}
+
+/* Modales Stefi / mensajeweb */
+.stefi-backdrop, .stefy-backdrop {
+  background: rgba(0,0,0,0.55) !important;
+}
+.stefi-box {
+  background: rgba(255,255,255,0.08) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  color: #fff !important;
+}
+.stefi-box h2 { color: #fff !important; border-bottom-color: rgba(255,255,255,0.15) !important; }
+.stefi-box p { color: rgba(255,255,255,0.88) !important; }
+
+/* Modal write-comment */
+.write-box {
+  background: rgba(255,255,255,0.08) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  color: #fff !important;
+}
+.write-box h2 { color: #fff !important; border-bottom-color: rgba(255,255,255,0.15) !important; }
+
+/* Modal success */
+.success-box {
+  background: rgba(255,255,255,0.08) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  color: #fff !important;
+}
+.success-box h3 { color: #fff !important; }
+.success-box p { color: rgba(255,255,255,0.85) !important; }
+
+/* Modal info producto */
+.info-box {
+  background: rgba(255,255,255,0.08) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  color: #fff !important;
+}
+.info-head {
+  background: rgba(0,0,0,0.50) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border-bottom-color: rgba(255,255,255,0.10) !important;
+}
+.info-head h3 { color: #fff !important; }
+.info-content { color: rgba(255,255,255,0.88) !important; }
+
+/* Modal delivery selector */
+.delivery-selector-box {
+  background: rgba(255,255,255,0.08) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  color: #fff !important;
+}
+.delivery-selector-box h3 { color: #fff !important; }
+
+/* Curtains laterales (Cómo Comprar, Encargue, Info, Comentarios) */
+.curtain {
+  background: rgba(255,255,255,0.08) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+}
+.curtain-head {
+  background: rgba(0,0,0,0.55) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border-bottom-color: rgba(255,255,255,0.10) !important;
+}
+.curtain-head h2 { color: #fff !important; }
+.curtain-body {
+  background: rgba(255,255,255,0.04) !important;
+  color: rgba(255,255,255,0.90) !important;
+}
+.curtain-footer {
+  background: rgba(255,255,255,0.06) !important;
+  border-top-color: rgba(255,255,255,0.10) !important;
+}
+
+/* ─── 4 & 7. BOTONES: toda la web — más chicos, finos, centrados ─── */
+button {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+/* Botones de productos (más compactos) */
+.btn-comprar, .btn-info, .btn-carrito,
+.btn-retirar, .btn-domicilio {
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.7px !important;
+  padding: 9px 6px !important;
+}
+
+/* Botones de sidebar */
+.sidebar-btn {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+}
+
+/* Botones de curtain / modales */
+.curtain-action-btn,
+.write-comment-btn, .write-send-btn,
+.success-accept, .success-seeall,
+.stefi-close-btn, .delivery-option-btn,
+.see-all-btn, .avatar-vermás-btn {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 1px !important;
+}
+
+.write-cancel-btn {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+}
+
+/* ─── 5. BOTONES DEL CARRITO ─── */
+/* Principal: negro, texto blanco, compacto */
+#curtain-carrito .curtain-footer > button:first-child {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 1.2px !important;
+  padding: 12px 16px !important;
+  border-radius: var(--radius-btn) !important;
+}
+#curtain-carrito .curtain-footer > button:first-child:hover {
+  background: #1a1a1a !important;
+}
+
+/* Vaciar carrito: blanco, borde negro, texto rojo */
+#curtain-carrito .curtain-footer > button:last-child {
+  background: #ffffff !important;
+  color: red !important;
+  border: 1px solid #000000 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 1px !important;
+  padding: 11px 16px !important;
+  border-radius: var(--radius-btn) !important;
+}
+#curtain-carrito .curtain-footer > button:last-child:hover {
+  background: #fff5f5 !important;
+  border-color: red !important;
+}
+
+/* Footer carrito: columna, sin solapamiento */
+#curtain-carrito .curtain-footer {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  padding: 14px 18px !important;
+}
+
+/* ─── 6. reCAPTCHA: centrado, escala 0.80, sin desborde ─── */
+.recaptcha-wrap {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  margin: 14px 0 6px !important;
+}
+.recaptcha-wrap .g-recaptcha,
+.g-recaptcha {
+  display: flex !important;
+  justify-content: center !important;
+  transform: scale(0.80) !important;
+  transform-origin: center top !important;
+}
+@media (max-width: 480px) {
+  .recaptcha-wrap .g-recaptcha,
+  .g-recaptcha {
+    transform: scale(0.68) !important;
+    transform-origin: center top !important;
+  }
+}
+
+/* ─── 7. ALINEACIÓN GENERAL ─── */
+button > span, button > svg, button > img {
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+}
+/* Inputs y textareas en modales glass con color legible */
+.write-textarea, .form-input {
+  background: rgba(255,255,255,0.15) !important;
+  border-color: rgba(255,255,255,0.25) !important;
+  color: #fff !important;
+}
+.write-textarea::placeholder, .form-input::placeholder {
+  color: rgba(255,255,255,0.45) !important;
+}
+.write-textarea:focus, .form-input:focus {
+  border-color: rgba(255,255,255,0.5) !important;
+  background: rgba(255,255,255,0.20) !important;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.08) !important;
+}
+/* Labels en modales glass */
+.form-label { color: rgba(255,255,255,0.85) !important; }
 </style>
 </head>
 <body>
@@ -1649,6 +2082,7 @@ p, li, label, span, div {
 </div>
 
 <!-- STEFI MODAL 1 -->
+<!-- CAMBIO 1: .stefi-backdrop con display:flex para centrado correcto -->
 <div class="stefi-backdrop" id="stefi1">
   <div class="stefi-box">
     <h2>¡Hola! Soy Stefy 🐾</h2>
@@ -1662,8 +2096,9 @@ p, li, label, span, div {
     <p>¡Para que mientras vos tomás mate y comés galletitas, tu mascota también tenga su merienda especial y saludable!</p>
     <p>Y los budines/tortas hechas por encargo, todo 100% natural para que también tengan su fiesta.</p>
     <p>Escribime por WhatsApp y armamos tu pedido juntos ❤️</p>
+    <!-- CAMBIO 1: botón cerrar centrado con clase correcta -->
     <div class="stefi-close">
-      <button class="stefi-close-btn" onclick="closeStefi(1)">Cerrar</button>
+      <button class="stefi-close-btn" id="btnCerrarStefi1">Cerrar</button>
     </div>
   </div>
 </div>
@@ -1684,8 +2119,9 @@ p, li, label, span, div {
     <p>Yo lo hago con todo el cariño del mundo, y sé que a tu mascota le va a encantar.</p>
     <p>¿Querés agasajarla hoy? Podés comprar directamente desde la web (yo me encargo de todo) o mandarme mensaje por WhatsApp y coordinamos tu pedido juntos.</p>
     <p>Estoy acá para ayudarte a hacer feliz a ese ser tan especial que tenés en casa ❤️</p>
+    <!-- CAMBIO 1: botón cerrar centrado -->
     <div class="stefy-close">
-      <button class="stefi-close-btn" onclick="closeStefy(2)">Cerrar</button>
+      <button class="stefi-close-btn" id="btnCerrarStefy2">Cerrar</button>
     </div>
   </div>
 </div>
@@ -1698,11 +2134,10 @@ p, li, label, span, div {
       class="write-textarea"
       id="comentarioText"
       placeholder="Contanos tu experiencia con nuestros productos y la atención de Stefy"
-      style="width:100%;height:120px;padding:14px;border-radius:12px;border:1px solid rgba(0,0,0,0.12);font-family:'Glacial Indifference',sans-serif;font-size:14px;resize:none;outline:none;transition:border-color 0.2s;background:#fafafa;"
       onfocus="this.style.borderColor='#000'"
       onblur="this.style.borderColor='rgba(0,0,0,0.12)'"
     ></textarea>
-    <div style="margin-top:16px;display:flex;justify-content:center;">
+    <div class="recaptcha-wrap">
       <div class="g-recaptcha" data-sitekey="6LcWAsQsAAAAAE77NP8tHGW3DwknCVnEC_z9bTAe"></div>
     </div>
     <p id="recaptchaError" style="display:none;color:#c0392b;font-family:'Glacial Indifference',sans-serif;font-size:13px;text-align:center;margin-top:8px;font-weight:700;">⚠️ Verificá que no sos un robot</p>
@@ -1927,7 +2362,6 @@ const PRODUCTS = {
   ]
 };
 
-/* ── productCardHTML — botón carrito con clase btn-carrito ── */
 function productCardHTML(p, uid) {
   return `
   <div class="product-card">
@@ -2042,11 +2476,39 @@ window.closeCatalog = function() {
 document.getElementById('catalogBackdrop').addEventListener('click', function(e) {
   if (e.target === this) window.closeCatalog();
 });
-window.openStefi = function(n) { document.getElementById('stefi' + n).classList.add('open'); };
-window.closeStefi = function(n) { document.getElementById('stefi' + n).classList.remove('open'); };
-document.querySelectorAll('.stefi-backdrop').forEach(el => {
-  el.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
+
+/* CAMBIO 1: openStefi / closeStefi usando clases .open correctas */
+window.openStefi = function(n) {
+  if (n === 1) {
+    document.getElementById('stefi1').classList.add('open');
+  } else {
+    document.getElementById('stefy2').classList.add('open');
+  }
+};
+window.closeStefi = function(n) {
+  if (n === 1) {
+    document.getElementById('stefi1').classList.remove('open');
+  } else {
+    document.getElementById('stefy2').classList.remove('open');
+  }
+};
+
+/* CAMBIO 1: Eventos funcionales para botones cerrar de Stefi modals */
+document.getElementById('btnCerrarStefi1').addEventListener('click', function() {
+  document.getElementById('stefi1').classList.remove('open');
 });
+document.getElementById('btnCerrarStefy2').addEventListener('click', function() {
+  document.getElementById('stefy2').classList.remove('open');
+});
+
+/* CAMBIO 1: cerrar modales Stefi al hacer clic en el backdrop */
+document.getElementById('stefi1').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
+document.getElementById('stefy2').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
+
 window.scrollToSocial = function() {
   closeSidebar();
   document.getElementById('social').scrollIntoView({ behavior:'smooth' });
@@ -2227,53 +2689,39 @@ initCommentsListener();
 
 <!-- ===== CARRITO AVANZADO + LÓGICA DE ENVÍO ===== -->
 <script>
-/* Estado global de tipo de entrega */
-window._tipoEntrega = 'retirar'; // default: sin envío
-window._tipoEntregaBloqueado = false; // indica si el tipo de entrega está bloqueado
+window._tipoEntrega = 'retirar';
+window._tipoEntregaBloqueado = false;
 window._currentProductName = '';
 window._currentProductPrice = '';
 const COSTO_ENVIO = 1500;
 
 window.setTipoEntrega = function(tipo) {
   window._tipoEntrega = tipo;
-  /* Si el carrito está abierto, re-renderizar para actualizar el total */
   renderizarCurtainCarrito();
 };
 
 function _getCarrito() { return JSON.parse(localStorage.getItem("carritoCandy")) || []; }
 function _setCarrito(c) { localStorage.setItem("carritoCandy", JSON.stringify(c)); }
 
-/* Mostrar selector de tipo de entrega */
 window.mostrarSelectorEntrega = function(nombre, precio) {
   window._currentProductName = nombre;
   window._currentProductPrice = precio;
-  
-  /* Si el tipo de entrega está bloqueado, agregar directamente con ese tipo */
   if (window._tipoEntregaBloqueado) {
     agregarAlCarrito(window._currentProductName, window._currentProductPrice);
     return;
   }
-  
-  /* Si no está bloqueado, mostrar el selector */
   const backdrop = document.getElementById('deliverySelectorBackdrop');
   if (backdrop) backdrop.classList.add('open');
 };
 
-/* Seleccionar tipo de entrega y agregar al carrito */
 window.selectDeliveryType = function(tipo, productName, productPrice) {
   const backdrop = document.getElementById('deliverySelectorBackdrop');
   if (backdrop) backdrop.classList.remove('open');
-  
-  /* Obtener el carrito actual */
   const c = _getCarrito();
-  
-  /* Si el carrito está vacío, esta es la primera selección - bloquear el tipo */
   if (c.length === 0) {
     window._tipoEntrega = tipo;
     window._tipoEntregaBloqueado = true;
   }
-  
-  /* Agregar el producto al carrito */
   agregarAlCarrito(window._currentProductName, window._currentProductPrice);
 };
 
@@ -2281,7 +2729,12 @@ function agregarAlCarrito(nombre, precio) {
   let c = _getCarrito();
   const idx = c.findIndex(p => p.nombre === nombre);
   if (idx >= 0) { c[idx].cantidad = (c[idx].cantidad || 1) + 1; }
-  else { c.push({ nombre, precio, cantidad: 1 }); }
+  else {
+    // Buscar imagen del producto en _productInfo
+    const allInfo = window._productInfo || {};
+    const imgSrc = Object.values(allInfo).find(p => p.nombre === nombre)?.img || "";
+    c.push({ nombre, precio, cantidad: 1, img: imgSrc });
+  }
   _setCarrito(c);
   actualizarContador();
   animarCarrito();
@@ -2315,20 +2768,16 @@ function enviarCarritoWhatsApp() {
   window.open(`https://wa.me/5492396512544?text=${msg}`, "_blank");
 }
 
-function vaciarCarrito() { 
-  _setCarrito([]); 
-  actualizarContador(); 
-}
+function vaciarCarrito() { _setCarrito([]); actualizarContador(); }
 
-function vaciarCarritoModal() { 
-  _setCarrito([]); 
-  window._tipoEntrega = 'retirar'; 
+function vaciarCarritoModal() {
+  _setCarrito([]);
+  window._tipoEntrega = 'retirar';
   window._tipoEntregaBloqueado = false;
-  actualizarContador(); 
-  renderizarCurtainCarrito(); 
+  actualizarContador();
+  renderizarCurtainCarrito();
 }
 
-/* ── _renderLista: muestra total con desglose de envío ── */
 function _renderLista(containerId, totalId, conEliminar) {
   const c = _getCarrito();
   const lista = document.getElementById(containerId);
@@ -2340,20 +2789,23 @@ function _renderLista(containerId, totalId, conEliminar) {
     lista.innerHTML = `<p style="color:#aaa;font-family:'Glacial Indifference',sans-serif;padding:20px 0;font-size:14px;text-align:center;">El carrito está vacío.</p>`;
     if (totalEl) totalEl.innerHTML = "";
   } else {
-    /* Subtotal de productos */
     lista.innerHTML = c.map((p, i) => {
       const num = parseInt((p.precio||"").replace(/\D/g,"")) || 0;
       suma += num * (p.cantidad||1);
-      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.06);font-family:'Glacial Indifference',sans-serif;gap:8px;">
-        <div style="flex:1;min-width:0;">
-          <div style="font-size:13px;font-weight:700;color:#111;letter-spacing:0.2px;">${p.nombre}</div>
-          <div style="font-size:11px;color:#aaa;margin-top:2px;font-weight:400;">${p.precio} × ${p.cantidad||1}</div>
+      const imgSrc = p.img || "";
+      const imgHtml = imgSrc
+        ? `<img src="${imgSrc}" alt="${p.nombre}" class="carrito-item-img" onerror="this.style.display='none'">`
+        : `<div class="carrito-item-img" style="background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:20px;">🛒</div>`;
+      return `<div class="carrito-item-row">
+        ${imgHtml}
+        <div class="carrito-item-info">
+          <div class="carrito-item-nombre">${p.nombre}</div>
+          <div class="carrito-item-meta">${p.precio} &times; ${p.cantidad||1}</div>
         </div>
-        ${conEliminar ? `<button onclick="eliminarProducto(${i})" style="background:none;border:none;cursor:pointer;font-size:14px;padding:0 4px;flex-shrink:0;opacity:0.4;transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.4">✕</button>` : ""}
+        ${conEliminar ? `<button class="carrito-item-del" onclick="eliminarProducto(${i})" title="Eliminar">✕</button>` : ""}
       </div>`;
     }).join("");
 
-    /* Total con lógica de envío */
     if (totalEl) {
       const esEnvio = window._tipoEntrega === 'domicilio';
       const totalFinal = suma + (esEnvio ? COSTO_ENVIO : 0);
